@@ -1,0 +1,11 @@
+1.00,"Blue Ribbon Discounts","Temporary","Daily Paper","None","None","Paper","None",2000.00,1994-10-01 00:00:00,1994-10-15 00:00:00
+2.00,"Red Carpet Closeout","Markdown","Sunday Paper","None","None","Paper","None",1000.00,1995-10-01 00:00:00,1995-10-15 00:00:00
+3.00,"Ad Blitz","None","Paper and Radio","None","None","Paper and Radio","None",7000.00,1994-11-10 00:00:00,1994-11-17 00:00:00
+4.00,"Ads and Racks","None","Paper and Radio","Rack","None","Paper and Radio","Smith",3000.00,1995-11-11 00:00:00,1995-11-18 00:00:00
+5.00,"Shelf Talkers","None","None","Shelf Tag","None","None","Jones",500.00,1994-10-01 00:00:00,1994-12-31 00:00:00
+6.00,"POS Grabbers","None","None","Register","None","None","Smith",600.00,1995-10-01 00:00:00,1995-12-31 00:00:00
+7.00,"Two for One","Coupon Only","Sunday Paper","None","Paper","Paper","None",1000.00,1994-11-15 00:00:00,1994-11-30 00:00:00
+8.00,"Cents Off Coupon","Coupon Only","Mailer","None","Mailer","None","None",1000.00,1995-11-15 00:00:00,1995-11-30 00:00:00
+9.00,"Redemption","Redemption Only","Attached","None","Attached","None","None",5000.00,1995-12-01 00:00:00,1995-12-31 00:00:00
+10.00,"Big Promo","Temporary","Daily Paper","End Aisle","None","Paper","Smith",8000.00,1995-12-15 00:00:00,1995-12-31 00:00:00
+11.00,"No Promotion","None","None","None","None","None","None",0.00,1994-10-01 00:00:00,1995-12-31 00:00:00
