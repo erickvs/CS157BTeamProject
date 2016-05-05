@@ -1,10 +1,57 @@
 USE Groceries;
 
 DROP TABLE IF EXISTS `Sales_Fact`;
-DROP TABLE IF EXISTS `Product`;
+
+-- ------------------------------------------------------------
+-- ------------------------- Create Schema of PROMOTION table -
+-- ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `Promotion`;
+
+CREATE TABLE `Promotion` (
+    `promotion_key` DOUBLE NOT NULL,
+    `promotion_name` VARCHAR(255),
+    `price_reduction_type` VARCHAR(255),
+    `ad_type` VARCHAR(255),
+    `display_type` VARCHAR(255),
+    `coupon_type` VARCHAR(255),
+    `ad_media_type` VARCHAR(255),
+    `display_provider` VARCHAR(255),
+    `promo_cost` DOUBLE,
+    `promo_begin_date` DATETIME,
+    `promo_end_date` DATETIME,
+    PRIMARY KEY (promotion_key)
+); 
+
+-- ------------------------------------------------------------
+-- --------------------------- Load data into PROMOTION table -
+-- ------------------------------------------------------------
+
+LOAD DATA LOCAL INFILE '/Users/evs/Desktop/GroceriesDB/Promotion.csv' 
+INTO TABLE Promotion 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+-- ------------------------------------------------------------
+-- -------------------- Modify PROMOTION table for assignment -
+-- ------------------------------------------------------------
+
+/* ALTER TABLE Promotion DROP COLUMN `promotion_name`; */
+ALTER TABLE Promotion DROP COLUMN `price_reduction_type`;
+ALTER TABLE Promotion DROP COLUMN `ad_type`;
+ALTER TABLE Promotion DROP COLUMN `display_type`;
+ALTER TABLE Promotion DROP COLUMN `coupon_type`;
+ALTER TABLE Promotion DROP COLUMN `ad_media_type`;
+ALTER TABLE Promotion DROP COLUMN `display_provider`;
+ALTER TABLE Promotion DROP COLUMN `promo_cost`;
+ALTER TABLE Promotion DROP COLUMN `promo_begin_date`;
+ALTER TABLE Promotion DROP COLUMN `promo_end_date`;
+
 -- ------------------------------------------------------------
 -- --------------------------- Create Schema of PRODUCT table -
 -- ------------------------------------------------------------
+DROP TABLE IF EXISTS `Product`;
 
 CREATE TABLE `Product` (
     `product_key` DOUBLE NOT NULL,
@@ -193,6 +240,9 @@ CREATE TABLE `Sales_Fact` (
     FOREIGN KEY (time_key) REFERENCES Time (time_key)
         ON DELETE SET NULL
         ON UPDATE CASCADE,
+    FOREIGN KEY (promotion_key) REFERENCES Promotion (promotion_key)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
     FOREIGN KEY (product_key) REFERENCES Product (product_key)
         ON DELETE SET NULL
         ON UPDATE CASCADE,
@@ -215,7 +265,6 @@ LINES TERMINATED BY '\n';
 -- ------------------- Modify SALES_FACT table for assignment -
 -- ------------------------------------------------------------
 
-ALTER TABLE `Sales_Fact` DROP COLUMN `promotion_key`;
 ALTER TABLE `Sales_Fact` DROP COLUMN `unit_sales`;
 ALTER TABLE `Sales_Fact` DROP COLUMN `dollar_cost`;
 ALTER TABLE `Sales_Fact` DROP COLUMN `customer_count`;

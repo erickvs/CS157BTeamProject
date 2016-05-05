@@ -1,4 +1,7 @@
-/*The Dice operation defines a sub cube by performing a selection on one or more dimensions*/
+/* 
+Central Cube:
+Each row represents the SALES IN DOLLARS per STORE STATE per PRODUCT CATEGORY per MONTH
+*/
 
 USE GROCERIES;
 SELECT 
@@ -9,8 +12,6 @@ SELECT
 FROM 
 	Store, Product, Time, sales_fact
 WHERE 
-	Store.store_state = 'CA' and
-	Product.category = 'food' and
 	Store.store_key = Sales_Fact.store_key and
 	Product.product_key = Sales_Fact.product_key and
 	Time.time_key = Sales_Fact.time_key 
