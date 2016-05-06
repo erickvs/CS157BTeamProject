@@ -1,5 +1,6 @@
 package ui;
 
+import engine.*;
 import java.sql.*;
 
 import java.awt.BorderLayout;
@@ -24,6 +25,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 public class BISystemUI {
+	
+	/*****************   QueryEngine    *****************/
+	private static QueryEngine qe = new QueryEngine();
+	/******************************************************/
+	
 	
 	/*********************   JDBC    **********************/
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -175,7 +181,7 @@ public class BISystemUI {
 		rollUpByDimensionReductionPanel = new JPanel(new GridBagLayout());
 		rollUpDimReducLabel = new JLabel("Dimension: ");
 		rollUpDimReducComboBox = new JComboBox<>(); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP DIMREDUC
-		rollUpDimReducButton = new JButton("ROLL UP");
+		rollUpDimReducButton = new JButton("ROLL UP");  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
 		rollUpByDimensionReductionPanel.add(rollUpDimReducLabel);
 		rollUpByDimensionReductionPanel.add(rollUpDimReducComboBox);
 		rollUpByDimensionReductionPanel.add(rollUpDimReducButton);
@@ -186,7 +192,7 @@ public class BISystemUI {
 		rollUpByClimbingHierarchyPanel = new JPanel(new GridBagLayout());
 		rollUpClimHierarLabel = new JLabel("Dimension: ");
 		rollUpClimHierarComboBox = new JComboBox<>(); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP CLIMB HIERARCHY
-		rollUpClimHierarButton = new JButton("ROLL UP");
+		rollUpClimHierarButton = new JButton("ROLL UP"); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarLabel);
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarComboBox);
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarButton);
@@ -197,18 +203,18 @@ public class BISystemUI {
 		drillDownAddDimensionPanel =  new JPanel(new GridBagLayout());
 		drillDownAddDimLabel = new JLabel("Dimension: ");
 		drillDownAddDimComboBox = new JComboBox<>(); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN ADDDIM
-		drillDownAdddimButton = new JButton("DRILL DOWN");
+		drillDownAdddimButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
 		drillDownAddDimensionPanel.add(drillDownAddDimLabel);
 		drillDownAddDimensionPanel.add(drillDownAddDimComboBox);
 		drillDownAddDimensionPanel.add(drillDownAdddimButton);
 		
 		//
-		//	DRILL DOWN BY CLIMBING HIERARCHY TAB
+		//	DRILL DOWN BY DESCENDING HIERARCHY TAB
 		//
 		drillDownDescendHierarchyPanel = new JPanel(new GridBagLayout());
 		drillDownDescHierarLabel = new JLabel("Dimension: ");
 		drillDownDescHierarComboBox = new JComboBox<>(); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN CLIMB HIER
-		drillDownDescHierarButton = new JButton("DRILL DOWN");
+		drillDownDescHierarButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarLabel);
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarComboBox);
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarButton);
@@ -234,7 +240,7 @@ public class BISystemUI {
 		dicePickValueFromDimensionComboBox2 = new JComboBox<>();
 		
 		
-		diceExecuteButton = new JButton("DICE");
+		diceExecuteButton = new JButton("DICE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
 		diceSubPanelNorth.add(dicePickDimensionLabel1);
 		diceSubPanelNorth.add(dicePickDimensionComboBox1);
 		diceSubPanelNorth.add(dicePickValueFromDimensionLabel1);
@@ -258,7 +264,7 @@ public class BISystemUI {
 		sliceDimensionComboBox = new JComboBox<>();
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
 		slicePickValueFromDimensionComboBox = new JComboBox<>();
-		sliceExecuteButton = new JButton("SLICE");
+		sliceExecuteButton = new JButton("SLICE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
 		slicePanel.add(sliceDimensionLabel);
 		slicePanel.add(sliceDimensionComboBox);
 		slicePanel.add(slicePickValueFromDimensionLabel);
@@ -328,12 +334,11 @@ public class BISystemUI {
 		nextPage = new JButton(">");
 		
 		// Reset to Central Cube Button
-		resetButton = new JButton("RESET CENTRAL CUBE");
+		resetButton = new JButton("RESET CENTRAL CUBE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  RESET BUTTON
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String query = createQuery("reset");
-				display.setText(executeSQL(query));
+				display.setText(qe.resetCube());
 			}
 		});
 		
@@ -357,54 +362,5 @@ public class BISystemUI {
 		frame.setVisible(true);
 		/******************************************************************/
 	}
-	private static String executeSQL(String query) {
-		// JDBC
-		Connection conn = null;
-		Statement stmt = null;
-		
-		String store_state = "";
-		String product_category = "";
-		int month = 0;
-		double sales = 0;
-		
-		String result = "";
-		result += " --------------------------------------- \n";
-		result += String.format("|%6s | %8s | %5s |%11s |%n", "State", "Category", "Month", "Sales");
-		result += " --------------------------------------- \n";
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				store_state = rs.getString(1);
-				product_category = rs.getString(2);
-				month = rs.getInt(3);
-				sales = rs.getDouble(4);
-				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
-			}
-			result += " --------------------------------------- \n";
-			
-			
-		} catch(Exception se) {
-			se.printStackTrace();
-		}
-		
-		
-		
-		return result;
-	}
 	
-	private static String createQuery(String action) {		
-		String query = null;
-			if (action.equals("reset")) {
-				query = "SELECT Store.store_state 'STORE STATE', Product.category 'PRODUCT CATEGORY', Time.month 'MONTH',  ROUND(SUM(Sales_Fact.dollar_sales), 2) AS 'SALES IN DOLLARS' FROM Store, Product, Time, sales_fact WHERE Store.store_key = Sales_Fact.store_key and Product.product_key = Sales_Fact.product_key and Time.time_key = Sales_Fact.time_key GROUP BY Store.store_state, Product.category, Time.month;";
-			}
-			
-			else if (action.equals("rollup")) {
-				query = "";
-			}
-		return query;
-	}
 }
