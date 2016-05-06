@@ -1,5 +1,7 @@
 package ui;
 
+import java.sql.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +10,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,10 +19,18 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 public class BISystemUI {
+	
+	/*********************   JDBC    **********************/
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://localhost:3306/Groceries";
+	static final String USER = "root";
+	static final String PASS = "pa$$w0rd"; // not my actual password
+	/******************************************************/
 	
 	/*********************   FRAME   **********************/
 	private static JFrame frame;
@@ -45,7 +57,9 @@ public class BISystemUI {
 	
 	/************** RIGHT PANEL COMPONENTS ****************/
 	private static JTextArea display;
+	private static JScrollPane scroll;
 	private static JButton nextPage;
+	private static JButton resetButton;
 	private static JButton lastPage;
 	private static JPanel buttonPanel;
 	/******************************************************/
@@ -112,7 +126,7 @@ public class BISystemUI {
 	private static JLabel productLabel;
 	/******************************************************/
 	
-	public static void run() {
+	public static void run() {		
 		// Initialize JFrame.
 		frame = new JFrame("Swayze's Business Intelligence Tool");
 		frame.setSize(frameWidth, frameHeight);
@@ -210,15 +224,14 @@ public class BISystemUI {
 		diceButtonSupanel.setLayout(new FlowLayout());
 		
 		dicePickDimensionLabel1 = new JLabel("Dim1:");
-		String[] names = {"Promotion","Promotion_name","Fidel","Namisha"};
-		dicePickDimensionComboBox1 = new JComboBox<>(names);
+		dicePickDimensionComboBox1 = new JComboBox<>();
 		dicePickValueFromDimensionLabel1 = new JLabel("Val:");
-		dicePickValueFromDimensionComboBox1 = new JComboBox<>(names);
+		dicePickValueFromDimensionComboBox1 = new JComboBox<>();
 		
 		dicePickDimensionLabel2 = new JLabel("Dim2:");
-		dicePickDimensionComboBox2 = new JComboBox<>(names);
+		dicePickDimensionComboBox2 = new JComboBox<>();
 		dicePickValueFromDimensionLabel2 = new JLabel("Val:");
-		dicePickValueFromDimensionComboBox2 = new JComboBox<>(names);
+		dicePickValueFromDimensionComboBox2 = new JComboBox<>();
 		
 		
 		diceExecuteButton = new JButton("DICE");
@@ -304,20 +317,34 @@ public class BISystemUI {
 		
 		// Create the display (JTextArea)
 		display = new JTextArea();
+		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 		display.setEditable(false);
 		display.setText("This is the display area");
+		
+		scroll = new JScrollPane(display);
 		
 		// Buttons for display
 		lastPage = new JButton("<");
 		nextPage = new JButton(">");
 		
+		// Reset to Central Cube Button
+		resetButton = new JButton("RESET CENTRAL CUBE");
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String query = createQuery("reset");
+				display.setText(executeSQL(query));
+			}
+		});
+		
 		// Add buttons to button panel
 		buttonPanel = new JPanel(new FlowLayout());
 		buttonPanel.add(lastPage);
+		buttonPanel.add(resetButton);
 		buttonPanel.add(nextPage);
 		/******************************************************************/
 		// Add display to rightPanel
-		rightPanel.add(display, BorderLayout.CENTER);
+		rightPanel.add(scroll, BorderLayout.CENTER);
 		
 		// Add button panel to right panel
 		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -329,5 +356,56 @@ public class BISystemUI {
 		// And finally show the frame
 		frame.setVisible(true);
 		/******************************************************************/
+	}
+	private static String executeSQL(String query) {
+		// JDBC
+		Connection conn = null;
+		Statement stmt = null;
+		
+		String store_state = "";
+		String product_category = "";
+		int month = 0;
+		double sales = 0;
+		
+		String result = "";
+		result += " --------------------------------------- \n";
+		result += String.format("|%6s | %8s | %5s |%11s |%n", "State", "Category", "Month", "Sales");
+		result += " --------------------------------------- \n";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+			System.out.println("This happens");
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				store_state = rs.getString(1);
+				product_category = rs.getString(2);
+				month = rs.getInt(3);
+				sales = rs.getDouble(4);
+				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
+			}
+			result += " --------------------------------------- \n";
+			
+			
+		} catch(Exception se) {
+			se.printStackTrace();
+		}
+		
+		
+		
+		return result;
+	}
+	
+	private static String createQuery(String action) {		
+		String query = null;
+			if (action.equals("reset")) {
+				query = "SELECT Store.store_state 'STORE STATE', Product.category 'PRODUCT CATEGORY', Time.month 'MONTH',  ROUND(SUM(Sales_Fact.dollar_sales), 2) AS 'SALES IN DOLLARS' FROM Store, Product, Time, sales_fact WHERE Store.store_key = Sales_Fact.store_key and Product.product_key = Sales_Fact.product_key and Time.time_key = Sales_Fact.time_key GROUP BY Store.store_state, Product.category, Time.month;";
+			}
+			
+			else if (action.equals("rollup")) {
+				query = "";
+			}
+		return query;
 	}
 }
