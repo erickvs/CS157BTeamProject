@@ -108,12 +108,6 @@ public class BISystemUI {
 	/******************************************************/
 	
 	public static void run() {
-		/*** DELETE BEGIN *****/
-		System.out.println("Panel Width: " +  panelWidth);
-		System.out.println("panel Height: " + panelHeight);
-		/*** DELETE END *****/
-		
-		
 		// Initialize JFrame.
 		frame = new JFrame("Swayze's Business Intelligence Tool");
 		frame.setSize(frameWidth, frameHeight);
@@ -273,7 +267,7 @@ public class BISystemUI {
 		rightPanel.add(display, BorderLayout.CENTER);
 		
 		// Add button panel to right panel
-		rightPanel.add(buttonPanel, BorderLayout.NORTH);
+		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		// Add leftPanel and rightPanel to frame.
 		frame.add(leftPanel);
