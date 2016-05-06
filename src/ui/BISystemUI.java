@@ -376,7 +376,6 @@ public class BISystemUI {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			stmt = conn.createStatement();
-			System.out.println("This happens");
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				store_state = rs.getString(1);
