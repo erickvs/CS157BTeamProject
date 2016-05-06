@@ -127,19 +127,19 @@ public class BISystemUI {
 		statePanel = new JPanel(new GridLayout(4,1));
 		statePanel.setBorder(BorderFactory.createTitledBorder("CURRENT STATE"));
 		
-		timeLabel = new JLabel("TIME: DAY [MONTH] QUARTER YEAR");
+		timeLabel = new JLabel("TIME: WEEK_NUMBER_OVERALL [MONTH] YEAR");
 		timeLabel.setForeground(Color.BLUE);
 		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
 		
-		storeLabel = new JLabel("STORE: CITY COUNTY [STATE] DISTRICT COUNTRY");
+		storeLabel = new JLabel("STORE: CITY [STORE_STATE] SALES_RIGION");
 		storeLabel.setForeground(Color.BLUE);
 		storeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
 		
-		promotionLabel = new JLabel("PROMOTION: BLAH [BLAH] BLAH");
+		promotionLabel = new JLabel("PROMOTION:  [PROMOTION_NAME]");
 		promotionLabel.setForeground(Color.BLUE);
 		promotionLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
 		
-		productLabel = new JLabel("PRODUCT: CHEETOS [PAPER] TOWELS BLAH BLAH");
+		productLabel = new JLabel("PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT");
 		productLabel.setForeground(Color.BLUE);
 		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
 		
