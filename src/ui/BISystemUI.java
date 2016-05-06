@@ -22,24 +22,25 @@ public class BISystemUI {
 	
 	/*********************   FRAME   **********************/
 	private static JFrame frame;
-	private static int frameWidth = 1300;
-	private static int frameHeight = 600;
+	private static int frameWidth = 1300; 	// 1300
+	private static int frameHeight = 600; 	// 600 --> 	If you change this then you have to play 
+											//         	with the field 'ipady' for a while to get 
+											//         	the borders to match, otherwise it will look
+											// 		   	weird. Just do CTRL-F, or whatever, in here to
+											//			find that field.
 	/******************************************************/
 	
 	/******************* STATE PANEL **********************/
 	private static JPanel statePanel;
 	/******************************************************/
 	
-	
 	/*************** LEFT AND RIGHT PANELS ****************/
 	private static JPanel leftPanel;
 	private static JPanel rightPanel;
-	
 	private static int panelWidth  =  
-			(int)(490.0 / 1000 * frameWidth) ;
-	
+			(int)(490.0 / 1000 * frameWidth) ; // DO NOT MODIFY
 	private static int panelHeight =  
-			(int)(465.0 / 500  * frameHeight) ;
+			(int)(465.0 / 500  * frameHeight) ; // DO NOT MODIFY
 	/******************************************************/
 	
 	/************** RIGHT PANEL COMPONENTS ****************/
@@ -51,8 +52,6 @@ public class BISystemUI {
 	
 	/*************** LEFT PANEL COMPONENTS ****************/
 	// CONSTANTS
-	private final static int LEFT_PANEL_ROWS = 4;
-	private final static int LEFT_PANEL_COLUMNS = 1;
 	private final static int CURRENT_STATE_FONT_SIZE = 18;
 	
 	// Tabbed Panes
@@ -152,7 +151,7 @@ public class BISystemUI {
 		// Initialize leftPanel
 		leftPanel = new JPanel(new GridBagLayout());
 		// leftPanel = new JPanel(new GridLayout(LEFT_PANEL_ROWS, LEFT_PANEL_COLUMNS));
-		leftPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+		leftPanel.setPreferredSize(new Dimension((int)(.8 * panelWidth), panelHeight));
 		
 		
 		
@@ -299,7 +298,7 @@ public class BISystemUI {
 		/******************************************************************/
 		// Initialize rightPanel
 		rightPanel = new JPanel(new BorderLayout());
-		rightPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+		rightPanel.setPreferredSize(new Dimension((int) (1.2 * panelWidth), panelHeight));
 		rightPanel.setBorder(BorderFactory.createTitledBorder("DISPLAY"));
 		//rightPanel.setBackground(Color.CYAN);
 		
@@ -330,6 +329,5 @@ public class BISystemUI {
 		// And finally show the frame
 		frame.setVisible(true);
 		/******************************************************************/
-		
 	}
 }
