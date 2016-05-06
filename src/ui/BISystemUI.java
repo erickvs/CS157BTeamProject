@@ -5,12 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,14 +17,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class BISystemUI {
 	
 	/*********************   FRAME   **********************/
 	private static JFrame frame;
 	private static int frameWidth = 1300;
-	private static int frameHeight = 700;
+	private static int frameHeight = 600;
 	/******************************************************/
 	
 	/******************* STATE PANEL **********************/
@@ -55,6 +53,7 @@ public class BISystemUI {
 	// CONSTANTS
 	private final static int LEFT_PANEL_ROWS = 4;
 	private final static int LEFT_PANEL_COLUMNS = 1;
+	private final static int CURRENT_STATE_FONT_SIZE = 18;
 	
 	// Tabbed Panes
 	private static JTabbedPane rollUpTabbedPane;
@@ -87,16 +86,23 @@ public class BISystemUI {
 	
 	// Elements for "Dice"
 	private static JPanel dicePanel;
-	private static JLabel dicePickDimensionLabel;
-	private static JComboBox<String> dicePickDimensionComboBox;
-	private static JLabel dicePickValueFromDimensionLabel;
-	private static JComboBox<String> dicePickValueFromDimensionComboBox;
+	private static JLabel dicePickDimensionLabel1;
+	private static JComboBox<String> dicePickDimensionComboBox1;
+	private static JLabel dicePickValueFromDimensionLabel1;
+	private static JComboBox<String> dicePickValueFromDimensionComboBox1;
+	private static JLabel dicePickDimensionLabel2;
+	private static JComboBox<String> dicePickDimensionComboBox2;
+	private static JLabel dicePickValueFromDimensionLabel2;
+	private static JComboBox<String> dicePickValueFromDimensionComboBox2;
+	
 	private static JButton diceExecuteButton;
 	
 	// Elements for "Slice"
 	private static JPanel slicePanel;
 	private static JLabel sliceDimensionLabel;
 	private static JComboBox<String> sliceDimensionComboBox;
+	private static JLabel slicePickValueFromDimensionLabel;
+	private static JComboBox<String> slicePickValueFromDimensionComboBox;
 	private static JButton sliceExecuteButton;
 	/******************************************************/
 	
@@ -123,19 +129,19 @@ public class BISystemUI {
 		
 		timeLabel = new JLabel("TIME: WEEK_NUMBER_OVERALL [MONTH] YEAR");
 		timeLabel.setForeground(Color.BLUE);
-		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		
 		storeLabel = new JLabel("STORE: CITY [STORE_STATE] SALES_RIGION");
 		storeLabel.setForeground(Color.BLUE);
-		storeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+		storeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		
 		promotionLabel = new JLabel("PROMOTION:  [PROMOTION_NAME]");
 		promotionLabel.setForeground(Color.BLUE);
-		promotionLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+		promotionLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		
 		productLabel = new JLabel("PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT");
 		productLabel.setForeground(Color.BLUE);
-		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		
 		statePanel.add(timeLabel);
 		statePanel.add(storeLabel);
@@ -144,8 +150,10 @@ public class BISystemUI {
 		/******************************************************************/
 		
 		// Initialize leftPanel
-		leftPanel = new JPanel(new GridLayout(LEFT_PANEL_ROWS, LEFT_PANEL_COLUMNS));
+		leftPanel = new JPanel(new GridBagLayout());
+		// leftPanel = new JPanel(new GridLayout(LEFT_PANEL_ROWS, LEFT_PANEL_COLUMNS));
 		leftPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+		
 		
 		
 		//
@@ -195,17 +203,39 @@ public class BISystemUI {
 		//
 		//	DICE TAB
 		//
-		dicePanel = new JPanel(new GridBagLayout());
-		dicePickDimensionLabel = new JLabel("Dimension: ");
-		dicePickDimensionComboBox = new JComboBox<>();
-		dicePickValueFromDimensionLabel = new JLabel("Value: ");
-		dicePickValueFromDimensionComboBox = new JComboBox<>();
+		dicePanel = new JPanel(new BorderLayout());
+		
+		JPanel diceSubPanelNorth = new JPanel();
+		JPanel diceSubPanelSouth = new JPanel();
+		JPanel diceButtonSupanel = new JPanel();
+		diceButtonSupanel.setLayout(new FlowLayout());
+		
+		dicePickDimensionLabel1 = new JLabel("Dim1:");
+		String[] names = {"Promotion","Promotion_name","Fidel","Namisha"};
+		dicePickDimensionComboBox1 = new JComboBox<>(names);
+		dicePickValueFromDimensionLabel1 = new JLabel("Val:");
+		dicePickValueFromDimensionComboBox1 = new JComboBox<>(names);
+		
+		dicePickDimensionLabel2 = new JLabel("Dim2:");
+		dicePickDimensionComboBox2 = new JComboBox<>(names);
+		dicePickValueFromDimensionLabel2 = new JLabel("Val:");
+		dicePickValueFromDimensionComboBox2 = new JComboBox<>(names);
+		
+		
 		diceExecuteButton = new JButton("DICE");
-		dicePanel.add(dicePickDimensionLabel);
-		dicePanel.add(dicePickDimensionComboBox);
-		dicePanel.add(dicePickValueFromDimensionLabel);
-		dicePanel.add(dicePickValueFromDimensionComboBox);
-		dicePanel.add(diceExecuteButton);
+		diceSubPanelNorth.add(dicePickDimensionLabel1);
+		diceSubPanelNorth.add(dicePickDimensionComboBox1);
+		diceSubPanelNorth.add(dicePickValueFromDimensionLabel1);
+		diceSubPanelNorth.add(dicePickValueFromDimensionComboBox1);
+		diceSubPanelSouth.add(dicePickDimensionLabel2);
+		diceSubPanelSouth.add(dicePickDimensionComboBox2);
+		diceSubPanelSouth.add(dicePickValueFromDimensionLabel2);
+		diceSubPanelSouth.add(dicePickValueFromDimensionComboBox2);
+		diceButtonSupanel.add(diceExecuteButton);
+		
+		dicePanel.add(diceSubPanelNorth, BorderLayout.NORTH);
+		dicePanel.add(diceSubPanelSouth, BorderLayout.CENTER);
+		dicePanel.add(diceButtonSupanel, BorderLayout.SOUTH);
 		
 		
 		//
@@ -214,9 +244,13 @@ public class BISystemUI {
 		slicePanel = new JPanel(new GridBagLayout());
 		sliceDimensionLabel = new JLabel("Dimension: ");
 		sliceDimensionComboBox = new JComboBox<>();
+		slicePickValueFromDimensionLabel = new JLabel("Value: ");
+		slicePickValueFromDimensionComboBox = new JComboBox<>();
 		sliceExecuteButton = new JButton("SLICE");
 		slicePanel.add(sliceDimensionLabel);
 		slicePanel.add(sliceDimensionComboBox);
+		slicePanel.add(slicePickValueFromDimensionLabel);
+		slicePanel.add(slicePickValueFromDimensionComboBox);
 		slicePanel.add(sliceExecuteButton);
 		
 		// Create tabbed panes and add panels.
@@ -238,10 +272,30 @@ public class BISystemUI {
 		
 		
 		// Add tabbed panes and the dice panel to the LEFT PANEL
-		leftPanel.add(rollUpTabbedPane);
-		leftPanel.add(drillDownTabbedPane);
-		leftPanel.add(sliceAndDiceTabbedPane);
-		leftPanel.add(statePanel);
+		
+		// The layout has to be, unfortunately, funky :\
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 0;
+		leftPanel.add(rollUpTabbedPane, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 1;
+		leftPanel.add(drillDownTabbedPane, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 2;
+		leftPanel.add(sliceAndDiceTabbedPane, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 23;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 3;
+		leftPanel.add(statePanel, c);
 		/******************************************************************/
 		// Initialize rightPanel
 		rightPanel = new JPanel(new BorderLayout());
