@@ -1,6 +1,9 @@
 package engine;
 
 import java.sql.*;
+import java.util.ArrayList;
+
+import ui.*;
 
 public class QueryEngine {
 	
@@ -12,8 +15,38 @@ public class QueryEngine {
 	/******************************************************/
 	
 	
+	private Time currentTimeState;
+	private Store currentStoreState;
+	private Promotion currentPromotionState;
+	private Product currentProductState;
+	private ArrayList<View> views;
+	
+	/**
+	 * Initializes states to the default initial values
+	 */
+	public QueryEngine() {
+		currentTimeState = Time.MONTH;
+		currentStoreState = Store.STORE_STATE;
+		currentPromotionState = Promotion.INACTIVE;
+		currentProductState = Product.CATEGORY;
+		views = new ArrayList<>();
+	}
+	
+	/**
+	 * Notifies views of a change in the state
+	 * so that they can update themselves.
+	 */
+	public void notifyViews() {
+		for (View view: views) {
+			view.updateView();
+		}
+	}
+	
+	/**
+	 * Changes the state of the current cube to the initial central cube.
+	 * @return
+	 */
 	public static String resetCube() {
-		
 		String query = 
 		"SELECT Store.store_state 'STORE STATE', Product.category 'PRODUCT CATEGORY', Time.month 'MONTH',  ROUND(SUM(Sales_Fact.dollar_sales), 2) AS 'SALES IN DOLLARS' "+
 		"FROM Store, Product, Time, sales_fact "+
@@ -46,14 +79,12 @@ public class QueryEngine {
 				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
 			}
 			result += " --------------------------------------- \n";
-			
-			
 		} catch(Exception se) {
 			se.printStackTrace();
 		}
-		
-		
-		
 		return result;
 	}
+
+	
+	
 }
