@@ -1,5 +1,6 @@
 package engine;
 
 public interface View {
-	void updateView();
+	void updateView(BIToolAction biToolAction);
+	BIToolAction getBiToolAction();
 }

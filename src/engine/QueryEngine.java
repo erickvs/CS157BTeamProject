@@ -38,7 +38,7 @@ public class QueryEngine {
 	 */
 	public void notifyViews() {
 		for (View view: views) {
-			view.updateView();
+			view.updateView(view.getBiToolAction());
 		}
 	}
 	
