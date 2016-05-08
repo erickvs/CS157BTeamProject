@@ -14,33 +14,15 @@ public class QueryEngine {
 	static final String PASS = "pa$$w0rd"; // not my actual password
 	/******************************************************/
 	
-	
-	private Time currentTimeState;
-	private Store currentStoreState;
-	private Promotion currentPromotionState;
-	private Product currentProductState;
-	private ArrayList<View> views;
+	StateModel sm;
 	
 	/**
-	 * Initializes states to the default initial values
+	 * Initializes states model
 	 */
-	public QueryEngine() {
-		currentTimeState = Time.MONTH;
-		currentStoreState = Store.STORE_STATE;
-		currentPromotionState = Promotion.INACTIVE;
-		currentProductState = Product.CATEGORY;
-		views = new ArrayList<>();
+	public QueryEngine(StateModel sm) {
+		this.sm = sm;
 	}
 	
-	/**
-	 * Notifies views of a change in the state
-	 * so that they can update themselves.
-	 */
-	public void notifyViews() {
-		for (View view: views) {
-			view.updateView(view.getBiToolAction());
-		}
-	}
 	
 	/**
 	 * Changes the state of the current cube to the initial central cube.
@@ -81,6 +63,31 @@ public class QueryEngine {
 			result += " --------------------------------------- \n";
 		} catch(Exception se) {
 			se.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * Creates a query depending on the biToolAction (ex: "rollup")
+	 * @param biToolAction
+	 * @return
+	 */
+	public String createQuery(BIToolAction biToolAction, String dimension) {
+		String result = "CALLED " + biToolAction + " with Dimension " + dimension;
+		// Database stuff would go here, for now just focus on model object transitions
+		switch(biToolAction) {
+			case ROLLUP_CLIMB_HIERARCHY:
+				sm.climb(dimension);
+				break;
+			case ROLLUP_DIM_REDUCTION:
+				sm.reduce(dimension);
+				break;
+			case DRILLDOWN_DESC_HIERARCHY:
+				sm.descend(dimension);
+				break;
+			case DRILLDOWN_ADD_DIM:
+				sm.add(dimension);
+				break;
 		}
 		return result;
 	}

@@ -27,8 +27,8 @@ import javax.swing.JTextArea;
 public class BISystemUI {
 	
 	/*****************       Engine       *****************/
-	private static QueryEngine qe = new QueryEngine();
 	private static StateModel sm = new StateModel();
+	private static QueryEngine qe = new QueryEngine(sm);
 	/******************************************************/
 	
 	
@@ -127,10 +127,10 @@ public class BISystemUI {
 	/******************************************************/
 	
 	/****************STATE PANEL COMPONENTS****************/
-	private static JLabel timeLabel;
-	private static JLabel storeLabel;
-	private static JLabel promotionLabel;
-	private static JLabel productLabel;
+	private static CustomJLabel timeLabel;
+	private static CustomJLabel storeLabel;
+	private static CustomJLabel promotionLabel;
+	private static CustomJLabel productLabel;
 	/******************************************************/
 	
 	public static void run() {		
@@ -147,21 +147,25 @@ public class BISystemUI {
 		statePanel = new JPanel(new GridLayout(4,1));
 		statePanel.setBorder(BorderFactory.createTitledBorder("CURRENT STATE"));
 		
-		timeLabel = new JLabel("TIME: WEEK_NUMBER_OVERALL [MONTH] YEAR");
+		timeLabel = new CustomJLabel(sm, "Time");
 		timeLabel.setForeground(Color.BLUE);
 		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
+		sm.addView(timeLabel);
 		
-		storeLabel = new JLabel("STORE: CITY [STORE_STATE] SALES_RIGION");
+		storeLabel = new CustomJLabel(sm, "Store");
 		storeLabel.setForeground(Color.BLUE);
 		storeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
+		sm.addView(storeLabel);
 		
-		promotionLabel = new JLabel("PROMOTION:  [PROMOTION_NAME]");
+		promotionLabel = new CustomJLabel(sm, "Promotion");
 		promotionLabel.setForeground(Color.BLUE);
 		promotionLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
+		sm.addView(promotionLabel);
 		
-		productLabel = new JLabel("PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT");
+		productLabel = new CustomJLabel(sm, "Product");
 		productLabel.setForeground(Color.BLUE);
 		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
+		sm.addView(productLabel);
 		
 		statePanel.add(timeLabel);
 		statePanel.add(storeLabel);
@@ -184,6 +188,15 @@ public class BISystemUI {
 		rollUpDimReducComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_DIM_REDUCTION); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP DIMREDUC
 		sm.addView(rollUpDimReducComboBox); // Add this to the State model list of views.
 		rollUpDimReducButton = new JButton("ROLL UP");  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
+		rollUpDimReducButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dimension = (String) rollUpDimReducComboBox.getSelectedItem();
+				// what do you do if the dimension is null?
+				// The button also has to be a view
+				display.setText(qe.createQuery(BIToolAction.ROLLUP_DIM_REDUCTION, dimension));
+			}
+		});
 		rollUpByDimensionReductionPanel.add(rollUpDimReducLabel);
 		rollUpByDimensionReductionPanel.add(rollUpDimReducComboBox);
 		rollUpByDimensionReductionPanel.add(rollUpDimReducButton);
@@ -196,6 +209,16 @@ public class BISystemUI {
 		rollUpClimHierarComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP CLIMB HIERARCHY
 		sm.addView(rollUpClimHierarComboBox);
 		rollUpClimHierarButton = new JButton("ROLL UP"); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
+		rollUpClimHierarButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dimension = (String) rollUpClimHierarComboBox.getSelectedItem();
+				// what do you do if the dimension is null?
+				// The button also has to be a view
+				display.setText(qe.createQuery(BIToolAction.ROLLUP_CLIMB_HIERARCHY, dimension));
+			}
+		});
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarLabel);
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarComboBox);
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarButton);
@@ -208,6 +231,16 @@ public class BISystemUI {
 		drillDownAddDimComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN ADDDIM
 		sm.addView(drillDownAddDimComboBox);
 		drillDownAdddimButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
+		drillDownAdddimButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dimension = (String) drillDownAddDimComboBox.getSelectedItem();
+				// what do you do if the dimension is null?
+				// The button also has to be a view
+				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_ADD_DIM, dimension));
+			}
+		});
 		drillDownAddDimensionPanel.add(drillDownAddDimLabel);
 		drillDownAddDimensionPanel.add(drillDownAddDimComboBox);
 		drillDownAddDimensionPanel.add(drillDownAdddimButton);
@@ -220,6 +253,16 @@ public class BISystemUI {
 		drillDownDescHierarComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN CLIMB HIER
 		sm.addView(drillDownDescHierarComboBox);
 		drillDownDescHierarButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
+		drillDownDescHierarButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dimension = (String) drillDownDescHierarComboBox.getSelectedItem();
+				// what do you do if the dimension is null?
+				// The button also has to be a view
+				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_DESC_HIERARCHY, dimension));
+			}
+		});
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarLabel);
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarComboBox);
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarButton);
@@ -349,7 +392,6 @@ public class BISystemUI {
 			public void actionPerformed(ActionEvent e) {
 				display.setText(qe.resetCube());
 				sm.initialState();
-				sm.notifyViews();
 			}
 		});
 		
