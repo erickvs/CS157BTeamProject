@@ -82,13 +82,13 @@ public class StateModel {
 				 result = "PRODUCT: INACTIVE";
 				 break;
 			 case SUBCATEGORY:
-				 result = "PRODUCT:[SUBCTEGORY] CATEGORY  DEPARTMENT";
+				 result = "PRODUCT:[SUBCATEGORY] CATEGORY  DEPARTMENT";
 				 break;
 			 case CATEGORY:
-				 result = "PRODUCT: SUBCTEGORY [CATEGORY] DEPARTMENT";
+				 result = "PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT";
 				 break;
 			 case DEPARTMENT:
-				 result = "PRODUCT: SUBCTEGORY  CATEGORY [DEPARTMENT]";
+				 result = "PRODUCT: SUBCATEGORY  CATEGORY [DEPARTMENT]";
 				 break;
 			 }
 			 break;
