@@ -22,9 +22,6 @@ public class CustomJComboBox extends JComboBox<String> implements View {
 		//this.repaint();
 	}
 
-	@Override
-	public BIToolAction getBiToolAction() {
-		return biToolAction;
-	}
+	
 
 }

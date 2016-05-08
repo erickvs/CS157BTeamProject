@@ -84,25 +84,25 @@ public class BISystemUI {
 	private static JPanel rollUpByDimensionReductionPanel;
 	private static JLabel rollUpDimReducLabel;
 	private static CustomJComboBox rollUpDimReducComboBox;
-	private static JButton rollUpDimReducButton;
+	private static CustomJButton rollUpDimReducButton;
 	
 	// Elements for "Roll Up - Climbing Hierarchy" tab
 	private static JPanel rollUpByClimbingHierarchyPanel;
 	private static JLabel rollUpClimHierarLabel;
 	private static CustomJComboBox  rollUpClimHierarComboBox;
-	private static JButton rollUpClimHierarButton;
+	private static CustomJButton rollUpClimHierarButton;
 	
 	// Elements for "Drill Down - Add Dimension" tab
 	private static JPanel drillDownAddDimensionPanel;
 	private static JLabel drillDownAddDimLabel;
 	private static CustomJComboBox drillDownAddDimComboBox;
-	private static JButton drillDownAdddimButton;
+	private static CustomJButton drillDownAdddimButton;
 	
 	// Elements for "Drill Down - Descend Hierarchy" tab
 	private static JPanel drillDownDescendHierarchyPanel;
 	private static JLabel drillDownDescHierarLabel;
 	private static CustomJComboBox drillDownDescHierarComboBox;
-	private static JButton drillDownDescHierarButton;
+	private static CustomJButton drillDownDescHierarButton;
 	
 	// Elements for "Dice"
 	private static JPanel dicePanel;
@@ -115,7 +115,7 @@ public class BISystemUI {
 	private static JLabel dicePickValueFromDimensionLabel2;
 	private static CustomJComboBox dicePickValueFromDimensionComboBox2;
 	
-	private static JButton diceExecuteButton;
+	private static CustomJButton diceExecuteButton;
 	
 	// Elements for "Slice"
 	private static JPanel slicePanel;
@@ -123,7 +123,7 @@ public class BISystemUI {
 	private static CustomJComboBox sliceDimensionComboBox;
 	private static JLabel slicePickValueFromDimensionLabel;
 	private static CustomJComboBox slicePickValueFromDimensionComboBox;
-	private static JButton sliceExecuteButton;
+	private static CustomJButton sliceExecuteButton;
 	/******************************************************/
 	
 	/****************STATE PANEL COMPONENTS****************/
@@ -187,7 +187,8 @@ public class BISystemUI {
 		rollUpDimReducLabel = new JLabel("Dimension: ");
 		rollUpDimReducComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_DIM_REDUCTION); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP DIMREDUC
 		sm.addView(rollUpDimReducComboBox); // Add this to the State model list of views.
-		rollUpDimReducButton = new JButton("ROLL UP");  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
+		rollUpDimReducButton = new CustomJButton("ROLL UP", sm, BIToolAction.ROLLUP_DIM_REDUCTION);  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
+		sm.addView(rollUpDimReducButton);
 		rollUpDimReducButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -208,7 +209,8 @@ public class BISystemUI {
 		rollUpClimHierarLabel = new JLabel("Dimension: ");
 		rollUpClimHierarComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP CLIMB HIERARCHY
 		sm.addView(rollUpClimHierarComboBox);
-		rollUpClimHierarButton = new JButton("ROLL UP"); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
+		rollUpClimHierarButton = new CustomJButton("ROLL UP", sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
+		sm.addView(rollUpClimHierarButton);
 		rollUpClimHierarButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -230,7 +232,8 @@ public class BISystemUI {
 		drillDownAddDimLabel = new JLabel("Dimension: ");
 		drillDownAddDimComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN ADDDIM
 		sm.addView(drillDownAddDimComboBox);
-		drillDownAdddimButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
+		drillDownAdddimButton = new CustomJButton("DRILL DOWN",sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
+		sm.addView(drillDownAdddimButton);
 		drillDownAdddimButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -252,7 +255,8 @@ public class BISystemUI {
 		drillDownDescHierarLabel = new JLabel("Dimension: ");
 		drillDownDescHierarComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN CLIMB HIER
 		sm.addView(drillDownDescHierarComboBox);
-		drillDownDescHierarButton = new JButton("DRILL DOWN"); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
+		drillDownDescHierarButton = new CustomJButton("DRILL DOWN", sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
+		sm.addView(drillDownDescHierarButton);
 		drillDownDescHierarButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -290,7 +294,7 @@ public class BISystemUI {
 		dicePickValueFromDimensionComboBox2 = new CustomJComboBox(sm, BIToolAction.DICE);
 		sm.addView(dicePickValueFromDimensionComboBox2);
 		
-		diceExecuteButton = new JButton("DICE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
+		diceExecuteButton = new CustomJButton("DICE", sm, BIToolAction.DICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
 		diceSubPanelNorth.add(dicePickDimensionLabel1);
 		diceSubPanelNorth.add(dicePickDimensionComboBox1);
 		diceSubPanelNorth.add(dicePickValueFromDimensionLabel1);
@@ -316,7 +320,7 @@ public class BISystemUI {
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
 		slicePickValueFromDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
 		sm.addView(slicePickValueFromDimensionComboBox);
-		sliceExecuteButton = new JButton("SLICE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
+		sliceExecuteButton = new CustomJButton("SLICE", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
 		slicePanel.add(sliceDimensionLabel);
 		slicePanel.add(sliceDimensionComboBox);
 		slicePanel.add(slicePickValueFromDimensionLabel);
@@ -377,7 +381,7 @@ public class BISystemUI {
 		display = new JTextArea();
 		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 		display.setEditable(false);
-		display.setText("This is the display area");
+		display.setText("To Start press 'Reset Central Cube'");
 		
 		scroll = new JScrollPane(display);
 		

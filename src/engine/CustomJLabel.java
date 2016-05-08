@@ -17,10 +17,6 @@ public class CustomJLabel extends JLabel implements View{
 		setText(sm.newLabel(dimension));
 	}
 
-	@Override
-	public BIToolAction getBiToolAction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

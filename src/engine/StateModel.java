@@ -111,10 +111,10 @@ public class StateModel {
 			
 			case ROLLUP_CLIMB_HIERARCHY:
 				// Give a list of items that are active
-				if (time_state.getMask() < 3) items.add("Time");
-				if (store_state.getMask() < 3) items.add("Store");
+				if (time_state.getMask() < 3 && time_state.getMask() > 0) items.add("Time");
+				if (store_state.getMask() < 3 && store_state.getMask() > 0) items.add("Store");
 				// Cannot climb promotion hierarchy
-				if (product_state.getMask() < 3) items.add("Product");
+				if (product_state.getMask() < 3 && product_state.getMask() > 0) items.add("Product");
 				break;
 				
 			case DRILLDOWN_ADD_DIM:
@@ -236,7 +236,7 @@ public class StateModel {
 	  * Checks if all the dimensions are currently active
 	  * @return
 	  */
-	 public boolean allActive() {
+	 public boolean areAllDimensionsActive() {
 		 return time_state.isActive() &&
 				 product_state.isActive() &&
 				 store_state.isActive() &&
@@ -247,10 +247,65 @@ public class StateModel {
 	  * Checks if all the dimensions are currently inactive
 	  * @return
 	  */
-	 public boolean allInactive() {
+	 public boolean areAllDimensionsInactive() {
 		 return !time_state.isActive() &&
 				 !product_state.isActive() &&
 				 !store_state.isActive() &&
 				 !promotion_state.isActive();
+	 }
+	 
+	 public boolean isAnyDimensionActive() {
+		 return time_state.isActive() ||
+				 product_state.isActive() ||
+				 store_state.isActive() ||
+				 promotion_state.isActive();
+	 }
+	 
+	 public boolean isAnyDimensionInactive() {
+		 return !time_state.isActive() ||
+				 !product_state.isActive() ||
+				 !store_state.isActive() ||
+				 !promotion_state.isActive();
+	 }
+	 
+	 public boolean canClimbMoreInAnyDimension() {
+		 return (time_state.getMask() < 3 && time_state.getMask() > 0) ||
+				(product_state.getMask() < 3 && product_state.getMask() > 0) ||
+				(promotion_state.getMask() < 3 && promotion_state.getMask() > 0); 
+			
+	 }
+	 
+	 public boolean canDescendMoreInAnyDimension() {
+		 return (time_state.getMask() > 1) ||
+				(product_state.getMask() > 1) ||
+				(promotion_state.getMask() > 1); 
+			
+	 }
+	 
+	 public boolean isButtonEnabled(BIToolAction biToolAction) {
+		 
+		 boolean result = false;
+		 
+		 switch (biToolAction) {
+		 case ROLLUP_DIM_REDUCTION:
+			 result = isAnyDimensionActive();
+			 break;
+		 case ROLLUP_CLIMB_HIERARCHY:
+			 result = canClimbMoreInAnyDimension();
+			 break;
+		 case DRILLDOWN_ADD_DIM:
+			 result = isAnyDimensionInactive();
+			 break;
+		 case DRILLDOWN_DESC_HIERARCHY:
+			 result = canDescendMoreInAnyDimension();
+			 break;
+		 case DICE:
+			 break;
+		 case SLICE:
+			 break;
+		 }
+		 
+		 
+		 return result;
 	 }
 }
