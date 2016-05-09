@@ -168,6 +168,7 @@ public class QueryEngine {
 				query += ", ";
 			}
 		}
+		if (sm.areAllDimensionsInactive()) query = "";
 		notifyTextAreaOfSQL(query); // For the SQL Display.
 		return query;
 	}
@@ -176,7 +177,8 @@ public class QueryEngine {
 		Map<String, String> dimensionToStates = sm.getActiveDimensionsAndStates();
 		Object[] dimensions = dimensionToStates.keySet().toArray();
 		String query = this.generateSql(dimensionToStates, false, null);
-		
+		// This happens if all the states were inactive.. otherwilse you get a weird output.
+		if (query.equals("")) return "";
 		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;
@@ -227,6 +229,8 @@ public class QueryEngine {
 		Map<String, String> dimensionsToStates = sm.getActiveDimensionsAndStates();
 		Object[] dimensions = dimensionsToStates.keySet().toArray();
 		String query = this.generateSql(dimensionsToStates, true, dimensionFilters);
+		// This happens if all the states were inactive.. otherwilse you get a weird output.
+		if (query.equals("")) return "";
 		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;
@@ -279,6 +283,8 @@ public class QueryEngine {
 		Map<String, String> dimensionFilters = new TreeMap<>();
 		dimensionFilters.put(dimension, dimensionValue);
 		String query = this.generateSql(dimensionsToStates, true, dimensionFilters);
+		// This happens if all the states were inactive.. otherwilse you get a weird output.
+		if (query.equals("")) return "";
 		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;

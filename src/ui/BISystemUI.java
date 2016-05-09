@@ -26,6 +26,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import engine.BIToolAction;
 import engine.CustomJButton;
@@ -287,10 +288,6 @@ public class BISystemUI {
 		//	DICE TAB
 		//
 		dicePanel = new JPanel(new GridBagLayout());
-		JPanel diceSubPanelNorth = new JPanel(new BorderLayout());
-		JPanel diceSubPanelSouth = new JPanel(new BorderLayout());
-		JPanel diceButtonSupanel = new JPanel();
-		diceButtonSupanel.setLayout(new FlowLayout());
 		dicePickValueFromDimensionLabel1 = new JLabel("Time:");
 		dicePickValueFromDimensionJTextField1 = new JTextField(15);
 		dicePickValueFromDimensionLabel2 = new JLabel("Store:");
@@ -299,6 +296,19 @@ public class BISystemUI {
 		dicePickValueFromDimensionJTextField3 = new JTextField(15);
 		dicePickValueFromDimensionLabel4 = new JLabel("Product:");
 		dicePickValueFromDimensionJTextField4 = new JTextField(15);
+		
+		JButton clearBtn = new JButton("Clear");
+		clearBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dicePickValueFromDimensionJTextField1.setText("");
+				dicePickValueFromDimensionJTextField2.setText("");
+				dicePickValueFromDimensionJTextField3.setText("");
+				dicePickValueFromDimensionJTextField4.setText("");
+			}
+		});
+		
 		diceExecuteButton = new CustomJButton("Dice", sm, BIToolAction.DICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
 		diceExecuteButton.addActionListener(new ActionListener(){
 
@@ -331,7 +341,9 @@ public class BISystemUI {
 		diceSubPanel.add(dicePickValueFromDimensionJTextField3);
 		diceSubPanel.add(dicePickValueFromDimensionLabel4);
 		diceSubPanel.add(dicePickValueFromDimensionJTextField4);
-		diceButtonSupanel.add(diceExecuteButton);
+		JPanel diceButtonSupanel = new JPanel(new BorderLayout());
+		diceButtonSupanel.add(diceExecuteButton, BorderLayout.NORTH);
+		diceButtonSupanel.add(clearBtn, BorderLayout.SOUTH);
 		dicePanel.add(diceSubPanel);
 		dicePanel.add(diceButtonSupanel);
 		
@@ -340,11 +352,11 @@ public class BISystemUI {
 		//	SLICE TAB
 		//
 		slicePanel = new JPanel(new GridBagLayout());
-		sliceDimensionLabel = new JLabel("Dimension: ");
+		sliceDimensionLabel = new JLabel("Dim: ");
 		sliceDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
 		sm.addView(sliceDimensionComboBox);
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
-		slicePickValueFromDimensionTextField = new JTextField("Field value goes here.");
+		slicePickValueFromDimensionTextField = new JTextField(15);
 		sliceExecuteButton = new CustomJButton("Slice", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
 		sliceExecuteButton.addActionListener(new ActionListener(){
 
@@ -429,7 +441,7 @@ public class BISystemUI {
 		display.setEditable(false);
 		display.setText("To start press 'Reset Central Cube'");
 		scroll = new JScrollPane(display);
-		scroll.setBorder(BorderFactory.createTitledBorder("RESULT"));
+		scroll.setBorder(BorderFactory.createTitledBorder("Result"));
 		
 		// Reset to Central Cube Button
 		resetButton = new JButton("Reset Central Cube"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  RESET BUTTON
