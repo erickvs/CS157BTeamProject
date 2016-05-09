@@ -1,8 +1,5 @@
 package ui;
 
-import engine.*;
-import java.sql.*;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +10,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,6 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+
+import engine.BIToolAction;
+import engine.CustomJButton;
+import engine.CustomJComboBox;
+import engine.CustomJLabel;
+import engine.QueryEngine;
+import engine.StateModel;
 
 public class BISystemUI {
 	
@@ -65,16 +73,17 @@ public class BISystemUI {
 	
 	/************** RIGHT PANEL COMPONENTS ****************/
 	private static JTextArea display;
+	private static JTextArea sqlDisplay;
 	private static JScrollPane scroll;
-	private static JButton nextPage;
+	private static JScrollPane sqlScroll;
 	private static JButton resetButton;
-	private static JButton lastPage;
 	private static JPanel buttonPanel;
 	/******************************************************/
 	
 	/*************** LEFT PANEL COMPONENTS ****************/
 	// CONSTANTS
 	private final static int CURRENT_STATE_FONT_SIZE = 18;
+	private final static Color CURRENT_STATE_FONT_COLOR = new Color(50, 50, 50);
 	
 	// Tabbed Panes
 	private static JTabbedPane rollUpTabbedPane;
@@ -107,14 +116,15 @@ public class BISystemUI {
 	
 	// Elements for "Dice"
 	private static JPanel dicePanel;
-	private static JLabel dicePickDimensionLabel1;
-	private static CustomJComboBox dicePickDimensionComboBox1;
+	
 	private static JLabel dicePickValueFromDimensionLabel1;
-	private static CustomJComboBox dicePickValueFromDimensionComboBox1;
-	private static JLabel dicePickDimensionLabel2;
-	private static CustomJComboBox dicePickDimensionComboBox2;
+	private static JTextField dicePickValueFromDimensionJTextField1;
 	private static JLabel dicePickValueFromDimensionLabel2;
-	private static CustomJComboBox dicePickValueFromDimensionComboBox2;
+	private static JTextField dicePickValueFromDimensionJTextField2;
+	private static JLabel dicePickValueFromDimensionLabel3;
+	private static JTextField dicePickValueFromDimensionJTextField3;
+	private static JLabel dicePickValueFromDimensionLabel4;
+	private static JTextField dicePickValueFromDimensionJTextField4;
 	
 	private static CustomJButton diceExecuteButton;
 	
@@ -123,7 +133,6 @@ public class BISystemUI {
 	private static JLabel sliceDimensionLabel;
 	private static CustomJComboBox sliceDimensionComboBox;
 	private static JLabel slicePickValueFromDimensionLabel;
-	//private static CustomJComboBox slicePickValueFromDimensionComboBox;
 	private static JTextField slicePickValueFromDimensionTextField; 
 	private static CustomJButton sliceExecuteButton;
 	/******************************************************/
@@ -150,22 +159,22 @@ public class BISystemUI {
 		statePanel.setBorder(BorderFactory.createTitledBorder("CURRENT STATE"));
 		
 		timeLabel = new CustomJLabel(sm, "Time");
-		timeLabel.setForeground(Color.BLUE);
+		timeLabel.setForeground(CURRENT_STATE_FONT_COLOR);
 		timeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		sm.addView(timeLabel);
 		
 		storeLabel = new CustomJLabel(sm, "Store");
-		storeLabel.setForeground(Color.BLUE);
+		storeLabel.setForeground(CURRENT_STATE_FONT_COLOR);
 		storeLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		sm.addView(storeLabel);
 		
 		promotionLabel = new CustomJLabel(sm, "Promotion");
-		promotionLabel.setForeground(Color.BLUE);
+		promotionLabel.setForeground(CURRENT_STATE_FONT_COLOR);
 		promotionLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		sm.addView(promotionLabel);
 		
 		productLabel = new CustomJLabel(sm, "Product");
-		productLabel.setForeground(Color.BLUE);
+		productLabel.setForeground(CURRENT_STATE_FONT_COLOR);
 		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		sm.addView(productLabel);
 		
@@ -177,7 +186,6 @@ public class BISystemUI {
 		
 		// Initialize leftPanel
 		leftPanel = new JPanel(new GridBagLayout());
-		// leftPanel = new JPanel(new GridLayout(LEFT_PANEL_ROWS, LEFT_PANEL_COLUMNS));
 		leftPanel.setPreferredSize(new Dimension((int)(.8 * panelWidth), panelHeight));
 		
 		
@@ -195,8 +203,6 @@ public class BISystemUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dimension = (String) rollUpDimReducComboBox.getSelectedItem();
-				// what do you do if the dimension is null?
-				// The button also has to be a view
 				display.setText(qe.createQuery(BIToolAction.ROLLUP_DIM_REDUCTION, dimension));
 			}
 		});
@@ -218,8 +224,6 @@ public class BISystemUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dimension = (String) rollUpClimHierarComboBox.getSelectedItem();
-				// what do you do if the dimension is null?
-				// The button also has to be a view
 				display.setText(qe.createQuery(BIToolAction.ROLLUP_CLIMB_HIERARCHY, dimension));
 			}
 		});
@@ -241,8 +245,6 @@ public class BISystemUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dimension = (String) drillDownAddDimComboBox.getSelectedItem();
-				// what do you do if the dimension is null?
-				// The button also has to be a view
 				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_ADD_DIM, dimension));
 			}
 		});
@@ -264,8 +266,6 @@ public class BISystemUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String dimension = (String) drillDownDescHierarComboBox.getSelectedItem();
-				// what do you do if the dimension is null?
-				// The button also has to be a view
 				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_DESC_HIERARCHY, dimension));
 			}
 		});
@@ -276,40 +276,54 @@ public class BISystemUI {
 		//
 		//	DICE TAB
 		//
-		dicePanel = new JPanel(new BorderLayout());
-		
-		JPanel diceSubPanelNorth = new JPanel();
-		JPanel diceSubPanelSouth = new JPanel();
+		dicePanel = new JPanel(new GridBagLayout());
+		JPanel diceSubPanelNorth = new JPanel(new BorderLayout());
+		JPanel diceSubPanelSouth = new JPanel(new BorderLayout());
 		JPanel diceButtonSupanel = new JPanel();
 		diceButtonSupanel.setLayout(new FlowLayout());
-		
-		dicePickDimensionLabel1 = new JLabel("Dim1:");
-		dicePickDimensionComboBox1 = new CustomJComboBox(sm, BIToolAction.DICE);
-		sm.addView(dicePickDimensionComboBox1);
-		dicePickValueFromDimensionLabel1 = new JLabel("Val:");
-		dicePickValueFromDimensionComboBox1 = new CustomJComboBox(sm, BIToolAction.DICE);
-		sm.addView(dicePickValueFromDimensionComboBox1);
-		dicePickDimensionLabel2 = new JLabel("Dim2:");
-		dicePickDimensionComboBox2 = new CustomJComboBox(sm, BIToolAction.DICE);
-		sm.addView(dicePickDimensionComboBox2);
-		dicePickValueFromDimensionLabel2 = new JLabel("Val:");
-		dicePickValueFromDimensionComboBox2 = new CustomJComboBox(sm, BIToolAction.DICE);
-		sm.addView(dicePickValueFromDimensionComboBox2);
-		
+		dicePickValueFromDimensionLabel1 = new JLabel("Time:");
+		dicePickValueFromDimensionJTextField1 = new JTextField(15);
+		dicePickValueFromDimensionLabel2 = new JLabel("Store:");
+		dicePickValueFromDimensionJTextField2 = new JTextField(15);
+		dicePickValueFromDimensionLabel3 = new JLabel("Promotion:");
+		dicePickValueFromDimensionJTextField3 = new JTextField(15);
+		dicePickValueFromDimensionLabel4 = new JLabel("Product:");
+		dicePickValueFromDimensionJTextField4 = new JTextField(15);
 		diceExecuteButton = new CustomJButton("DICE", sm, BIToolAction.DICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
-		diceSubPanelNorth.add(dicePickDimensionLabel1);
-		diceSubPanelNorth.add(dicePickDimensionComboBox1);
-		diceSubPanelNorth.add(dicePickValueFromDimensionLabel1);
-		diceSubPanelNorth.add(dicePickValueFromDimensionComboBox1);
-		diceSubPanelSouth.add(dicePickDimensionLabel2);
-		diceSubPanelSouth.add(dicePickDimensionComboBox2);
-		diceSubPanelSouth.add(dicePickValueFromDimensionLabel2);
-		diceSubPanelSouth.add(dicePickValueFromDimensionComboBox2);
-		diceButtonSupanel.add(diceExecuteButton);
+		diceExecuteButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Map<String, String> map = new HashMap<>();
+				String dimensionValue1 = dicePickValueFromDimensionJTextField1.getText();
+				String dimensionValue2 = dicePickValueFromDimensionJTextField2.getText();
+				String dimensionValue3 = dicePickValueFromDimensionJTextField3.getText();
+				String dimensionValue4 = dicePickValueFromDimensionJTextField4.getText();
+				
+				if (!dimensionValue1.equals("")) map.put("Time", dimensionValue1);
+				if (!dimensionValue2.equals("")) map.put("Store", dimensionValue2);
+				if (!dimensionValue3.equals("")) map.put("Promotion", dimensionValue3);
+				if (!dimensionValue4.equals("")) map.put("Product", dimensionValue4);
+				
+				System.out.println(map.size());
+				
+				display.setText(qe.dice(map));
+			}
+			
+		});
 		
-		dicePanel.add(diceSubPanelNorth, BorderLayout.NORTH);
-		dicePanel.add(diceSubPanelSouth, BorderLayout.CENTER);
-		dicePanel.add(diceButtonSupanel, BorderLayout.SOUTH);
+		JPanel diceSubPanel = new JPanel(new GridLayout(4, 3));
+		diceSubPanel.add(dicePickValueFromDimensionLabel1);
+		diceSubPanel.add(dicePickValueFromDimensionJTextField1);
+		diceSubPanel.add(dicePickValueFromDimensionLabel2);
+		diceSubPanel.add(dicePickValueFromDimensionJTextField2);
+		diceSubPanel.add(dicePickValueFromDimensionLabel3);
+		diceSubPanel.add(dicePickValueFromDimensionJTextField3);
+		diceSubPanel.add(dicePickValueFromDimensionLabel4);
+		diceSubPanel.add(dicePickValueFromDimensionJTextField4);
+		diceButtonSupanel.add(diceExecuteButton);
+		dicePanel.add(diceSubPanel);
+		dicePanel.add(diceButtonSupanel);
 		
 		
 		//
@@ -320,10 +334,7 @@ public class BISystemUI {
 		sliceDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
 		sm.addView(sliceDimensionComboBox);
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
-//		slicePickValueFromDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
-//		sm.addView(slicePickValueFromDimensionComboBox);
 		slicePickValueFromDimensionTextField = new JTextField("Field value goes here.");
-
 		sliceExecuteButton = new CustomJButton("SLICE", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
 		sliceExecuteButton.addActionListener(new ActionListener(){
 
@@ -338,7 +349,6 @@ public class BISystemUI {
 		slicePanel.add(sliceDimensionLabel);
 		slicePanel.add(sliceDimensionComboBox);
 		slicePanel.add(slicePickValueFromDimensionLabel);
-//		slicePanel.add(slicePickValueFromDimensionComboBox);
 		slicePanel.add(slicePickValueFromDimensionTextField);
 		slicePanel.add(sliceExecuteButton);
 		
@@ -380,51 +390,86 @@ public class BISystemUI {
 		c.gridy = 2;
 		leftPanel.add(sliceAndDiceTabbedPane, c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 23;
+		c.ipady = 56;
 		c.weightx = 0.5;
 		c.gridx = 0;
 		c.gridy = 3;
 		leftPanel.add(statePanel, c);
 		/******************************************************************/
 		// Initialize rightPanel
-		rightPanel = new JPanel(new BorderLayout());
+		rightPanel = new JPanel(new GridBagLayout());
+		
 		rightPanel.setPreferredSize(new Dimension((int) (1.2 * panelWidth), panelHeight));
-		rightPanel.setBorder(BorderFactory.createTitledBorder("DISPLAY"));
-		//rightPanel.setBackground(Color.CYAN);
+		//rightPanel.setBorder(BorderFactory.createTitledBorder("DISPLAY"));
+		
+		// Create the sql display
+		sqlDisplay = new JTextArea();
+		sqlDisplay.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		sqlDisplay.setEditable(false);
+		sqlScroll = new JScrollPane(sqlDisplay);
+		sqlScroll.setBorder(BorderFactory.createTitledBorder("SQL COMMAND GENERATED"));
+		qe.setSqlDisplay(sqlDisplay); //<<<<<< I KNOW ITS UGLY
 		
 		// Create the display (JTextArea)
 		display = new JTextArea();
 		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
 		display.setEditable(false);
 		display.setText("To Start press 'Reset Central Cube'");
-		
 		scroll = new JScrollPane(display);
-		
-		// Buttons for display
-		lastPage = new JButton("<");
-		nextPage = new JButton(">");
+		scroll.setBorder(BorderFactory.createTitledBorder("RESULT"));
 		
 		// Reset to Central Cube Button
 		resetButton = new JButton("RESET CENTRAL CUBE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  RESET BUTTON
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				sqlDisplay.setText("\n"+qe.initialCentralCubeSQL());
 				display.setText(qe.resetCube());
 				sm.initialState();
 			}
 		});
 		
-		// Add buttons to button panel
-		buttonPanel = new JPanel(new FlowLayout());
-		buttonPanel.add(lastPage);
-		buttonPanel.add(resetButton);
-		buttonPanel.add(nextPage);
-		/******************************************************************/
-		// Add display to rightPanel
-		rightPanel.add(scroll, BorderLayout.CENTER);
 		
+		
+		// Add buttons to button panel
+		buttonPanel = new JPanel(new GridLayout(1, 1));
+		buttonPanel.setBorder(BorderFactory.createTitledBorder(""));
+		buttonPanel.add(resetButton);
+		/******************************************************************/
+		
+		c = new GridBagConstraints();
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 50;
+		//c.gridwidth = 5;
+		c.weightx = 0.5;
+		c.weighty = 0.5;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.PAGE_START;
+		
+		// Add  sql display to rightPanel
+		rightPanel.add(sqlScroll, c);
+		
+		c.fill = GridBagConstraints.BOTH;
+		c.ipady = 400;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		// Add display to rightPanel
+		rightPanel.add(scroll, c);
+		
+		
+		c.ipady = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.PAGE_END;
 		// Add button panel to right panel
-		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
+		rightPanel.add(buttonPanel, c);
 		
 		// Add leftPanel and rightPanel to frame.
 		frame.add(leftPanel);

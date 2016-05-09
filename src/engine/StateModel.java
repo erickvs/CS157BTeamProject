@@ -136,6 +136,10 @@ public class StateModel {
 				break;
 				
 			case DICE:
+				if (time_state.isActive()) items.add("Time");
+				if (store_state.isActive()) items.add("Store");
+				if (promotion_state.isActive()) items.add("Promotion");
+				if (product_state.isActive()) items.add("Product");
 				break;
 				
 			case SLICE:
@@ -154,15 +158,6 @@ public class StateModel {
 	  * Notify views of a change in the model
 	  */
 	 public void notifyViews() {
-		 
-		 /** DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE */
-		 String test = "\nTime: " + time_state + 
-				 "\nStore: " + store_state + 
-				 "\nPromotion: " + promotion_state +
-				 "\nProduct: " + product_state;
-		 System.out.println(test);
-		  /**DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE ** DELETE **/
-		 
 		 for (View view: views) {
 			 view.updateView();
 		 }
@@ -277,7 +272,7 @@ public class StateModel {
 	 public boolean canClimbMoreInAnyDimension() {
 		 return (time_state.getMask() < 3 && time_state.getMask() > 0) ||
 				(product_state.getMask() < 3 && product_state.getMask() > 0) ||
-				(promotion_state.getMask() < 3 && promotion_state.getMask() > 0); 
+				(store_state.getMask() < 3 && store_state.getMask() > 0); 
 			
 	 }
 	 

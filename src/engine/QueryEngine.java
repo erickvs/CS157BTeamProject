@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.swing.JTextArea;
+
 import ui.*;
 
 public class QueryEngine {
@@ -16,10 +18,16 @@ public class QueryEngine {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/Groceries";
 	static final String USER = "root";
-	static final String PASS = "poop"; // not my actual password
+	static final String PASS = "pa$$w0rd"; // not my actual password
 	/******************************************************/
 	
 	StateModel sm;
+	
+	// This is to notify the SQL Display in the gui
+	private JTextArea ta;
+	public void setSqlDisplay(JTextArea ta) {this.ta = ta;}
+	public void notifyTextAreaOfSQL(String sql) {this.ta.setText(sql);}
+	
 	
 	/**
 	 * Initializes states model
@@ -28,17 +36,27 @@ public class QueryEngine {
 		this.sm = sm;
 	}
 	
+	public static String initialCentralCubeSQL() {
+		return 
+		"SELECT " + 
+			"Store.store_state 'STORE STATE', " + 
+			"Product.category 'PRODUCT CATEGORY', "+
+			"Time.month 'MONTH',  "+
+			"ROUND(SUM(Sales_Fact.dollar_sales), 2) AS 'SALES IN DOLLARS' "+
+		"FROM Store, Product, Time, sales_fact "+
+		"WHERE Store.store_key = Sales_Fact.store_key and "+
+			"Product.product_key = Sales_Fact.product_key and "+
+			"Time.time_key = Sales_Fact.time_key "+
+		"GROUP BY Store.store_state, Product.category, Time.month;";
+	}
+	
 	
 	/**
 	 * Changes the state of the current cube to the initial central cube.
 	 * @return
 	 */
 	public static String resetCube() {
-		String query = 
-		"SELECT Store.store_state 'STORE STATE', Product.category 'PRODUCT CATEGORY', Time.month 'MONTH',  ROUND(SUM(Sales_Fact.dollar_sales), 2) AS 'SALES IN DOLLARS' "+
-		"FROM Store, Product, Time, sales_fact "+
-		"WHERE Store.store_key = Sales_Fact.store_key and Product.product_key = Sales_Fact.product_key and Time.time_key = Sales_Fact.time_key GROUP BY Store.store_state, Product.category, Time.month;";
-
+		String query = initialCentralCubeSQL();
 		// JDBC
 		Connection conn = null;
 		Statement stmt = null;
@@ -152,14 +170,16 @@ public class QueryEngine {
 				query += ", ";
 			}
 		}
+		notifyTextAreaOfSQL("\n"+query); // For the SQL Display.
 		return query;
 	}
+	
 	public String executeQueryForCurrentState() {
 		Map<String, String> dimensionToStates = sm.getActiveDimensionsAndStates();
 		Object[] dimensions = dimensionToStates.keySet().toArray();
 		String query = this.generateSql(dimensionToStates, false, null);
 		
-		System.out.println("Dynamically created query: " + query);
+		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;
 		Statement stmt = null;
@@ -174,7 +194,7 @@ public class QueryEngine {
 			result += String.format("|%17s ", dimension);
 		}
 		result += String.format("|%17s ", "Sales");
-		result += "|\n";
+		result += "|\n\n";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -198,7 +218,7 @@ public class QueryEngine {
 //				sales = rs.getDouble(4);
 //				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
 			}
-			result += " --------------------------------------- \n";
+			//result += " --------------------------------------- \n";
 		} catch(Exception se) {
 			se.printStackTrace();
 		}
@@ -209,7 +229,7 @@ public class QueryEngine {
 		Map<String, String> dimensionsToStates = sm.getActiveDimensionsAndStates();
 		Object[] dimensions = dimensionsToStates.keySet().toArray();
 		String query = this.generateSql(dimensionsToStates, true, dimensionFilters);
-		System.out.println("Dynamically created query: " + query);
+		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;
 		Statement stmt = null;
@@ -224,7 +244,7 @@ public class QueryEngine {
 			result += String.format("|%17s ", dimension1);
 		}
 		result += String.format("|%17s ", "Sales");
-		result += "|\n";
+		result += "|\n\n";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -248,7 +268,7 @@ public class QueryEngine {
 //				sales = rs.getDouble(4);
 //				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
 			}
-			result += " --------------------------------------- \n";
+			//result += " --------------------------------------- \n";
 		} catch(Exception se) {
 			se.printStackTrace();
 		}
@@ -261,7 +281,7 @@ public class QueryEngine {
 		Map<String, String> dimensionFilters = new TreeMap<>();
 		dimensionFilters.put(dimension, dimensionValue);
 		String query = this.generateSql(dimensionsToStates, true, dimensionFilters);
-		System.out.println("Dynamically created query: " + query);
+		//System.out.println("Dynamically created query: " + query);
 		// JDBC
 		Connection conn = null;
 		Statement stmt = null;
@@ -276,7 +296,7 @@ public class QueryEngine {
 			result += String.format("|%17s ", dimension1);
 		}
 		result += String.format("|%17s ", "Sales");
-		result += "|\n";
+		result += "|\n\n";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -300,7 +320,7 @@ public class QueryEngine {
 //				sales = rs.getDouble(4);
 //				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
 			}
-			result += " --------------------------------------- \n";
+			//result += " --------------------------------------- \n";
 		} catch(Exception se) {
 			se.printStackTrace();
 		}
