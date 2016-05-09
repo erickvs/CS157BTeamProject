@@ -67,7 +67,7 @@ public class QueryEngine {
 		double sales = 0;
 		
 		String result = "";
-		result += String.format("|%17s | %17s | %17s |%17s |%n", "Product", "Store",  "Time", "Sales");
+		result += String.format("|%22s | %22s | %22s |%22s |%n", "Product", "Store",  "Time", "Sales");
 		result += "\n";
 		
 		try {
@@ -80,7 +80,7 @@ public class QueryEngine {
 				product_category = rs.getString(2);
 				month = rs.getInt(3);
 				sales = rs.getDouble(4);
-				result += String.format("|%17s | %17s | %17d | %17s |%n", product_category, store_state,  month, sales);
+				result += String.format("|%22s | %22s | %22d | %22s |%n", product_category, store_state,  month, sales);
 			}
 		} catch(Exception se) {
 			se.printStackTrace();
@@ -168,7 +168,7 @@ public class QueryEngine {
 				query += ", ";
 			}
 		}
-		notifyTextAreaOfSQL("\n"+query); // For the SQL Display.
+		notifyTextAreaOfSQL(query); // For the SQL Display.
 		return query;
 	}
 	
@@ -189,9 +189,9 @@ public class QueryEngine {
 		String result = "";
 		for(int i = 0; i < dimensions.length; i++){
 			String dimension = (String) dimensions[i];
-			result += String.format("|%17s ", dimension);
+			result += String.format("|%22s ", dimension);
 		}
-		result += String.format("|%17s ", "Sales");
+		result += String.format("|%22s ", "Sales");
 		result += "|\n\n";
 		
 		try {
@@ -206,7 +206,7 @@ public class QueryEngine {
 					states.add(rs.getString(i));
 				}
 				for(String s : states){
-					result += String.format("|%17s ", s);
+					result += String.format("|%22s ", s);
 				}
 				result += "|\n";
 				
@@ -239,9 +239,9 @@ public class QueryEngine {
 		String result = "";
 		for(int i = 0; i < dimensions.length; i++){
 			String dimension1 = (String) dimensions[i];
-			result += String.format("|%17s ", dimension1);
+			result += String.format("|%22s ", dimension1);
 		}
-		result += String.format("|%17s ", "Sales");
+		result += String.format("|%22s ", "Sales");
 		result += "|\n\n";
 		
 		try {
@@ -256,7 +256,7 @@ public class QueryEngine {
 					states.add(rs.getString(i));
 				}
 				for(String s : states){
-					result += String.format("|%17s ", s);
+					result += String.format("|%22s ", s);
 				}
 				result += "|\n";
 				
@@ -291,9 +291,9 @@ public class QueryEngine {
 		String result = "";
 		for(int i = 0; i < dimensions.length; i++){
 			String dimension1 = (String) dimensions[i];
-			result += String.format("|%17s ", dimension1);
+			result += String.format("|%22s ", dimension1);
 		}
-		result += String.format("|%17s ", "Sales");
+		result += String.format("|%22s ", "Sales");
 		result += "|\n\n";
 		
 		try {
@@ -308,7 +308,7 @@ public class QueryEngine {
 					states.add(rs.getString(i));
 				}
 				for(String s : states){
-					result += String.format("|%17s ", s);
+					result += String.format("|%22s ", s);
 				}
 				result += "|\n";
 				

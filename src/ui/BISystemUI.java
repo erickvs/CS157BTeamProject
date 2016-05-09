@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -82,7 +83,7 @@ public class BISystemUI {
 	
 	/*************** LEFT PANEL COMPONENTS ****************/
 	// CONSTANTS
-	private final static int CURRENT_STATE_FONT_SIZE = 18;
+	private final static int CURRENT_STATE_FONT_SIZE = 17;
 	private final static Color CURRENT_STATE_FONT_COLOR = new Color(50, 50, 50);
 	
 	// Tabbed Panes
@@ -156,7 +157,7 @@ public class BISystemUI {
 		/******************************************************************/
 		// Initialize state panel and fill it with the state labels
 		statePanel = new JPanel(new GridLayout(4,1));
-		statePanel.setBorder(BorderFactory.createTitledBorder("CURRENT STATE"));
+		statePanel.setBorder(BorderFactory.createTitledBorder("Current Dimensions States"));
 		
 		timeLabel = new CustomJLabel(sm, "Time");
 		timeLabel.setForeground(CURRENT_STATE_FONT_COLOR);
@@ -198,13 +199,15 @@ public class BISystemUI {
 		rollUpDimReducLabel = new JLabel("Dimension: ");
 		rollUpDimReducComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_DIM_REDUCTION); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP DIMREDUC
 		sm.addView(rollUpDimReducComboBox); // Add this to the State model list of views.
-		rollUpDimReducButton = new CustomJButton("ROLL UP", sm, BIToolAction.ROLLUP_DIM_REDUCTION);  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
+		rollUpDimReducButton = new CustomJButton("Roll Up", sm, BIToolAction.ROLLUP_DIM_REDUCTION);  //<<<<<<<<<<<<<<<<<< ROLL UP -- DIMENSION REDUCTION BUTTON
 		sm.addView(rollUpDimReducButton);
 		rollUpDimReducButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				String dimension = (String) rollUpDimReducComboBox.getSelectedItem();
 				display.setText(qe.createQuery(BIToolAction.ROLLUP_DIM_REDUCTION, dimension));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 		rollUpByDimensionReductionPanel.add(rollUpDimReducLabel);
@@ -218,14 +221,16 @@ public class BISystemUI {
 		rollUpClimHierarLabel = new JLabel("Dimension: ");
 		rollUpClimHierarComboBox = new CustomJComboBox(sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR ROLLUP CLIMB HIERARCHY
 		sm.addView(rollUpClimHierarComboBox);
-		rollUpClimHierarButton = new CustomJButton("ROLL UP", sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
+		rollUpClimHierarButton = new CustomJButton("Roll Up", sm, BIToolAction.ROLLUP_CLIMB_HIERARCHY); //<<<<<<<<<<<<<<<<<< ROLL UP -- CLIMBING HIERARCHY BUTTON
 		sm.addView(rollUpClimHierarButton);
 		rollUpClimHierarButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				String dimension = (String) rollUpClimHierarComboBox.getSelectedItem();
 				display.setText(qe.createQuery(BIToolAction.ROLLUP_CLIMB_HIERARCHY, dimension));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 		rollUpByClimbingHierarchyPanel.add(rollUpClimHierarLabel);
@@ -239,14 +244,16 @@ public class BISystemUI {
 		drillDownAddDimLabel = new JLabel("Dimension: ");
 		drillDownAddDimComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN ADDDIM
 		sm.addView(drillDownAddDimComboBox);
-		drillDownAdddimButton = new CustomJButton("DRILL DOWN",sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
+		drillDownAdddimButton = new CustomJButton("Drill Down",sm, BIToolAction.DRILLDOWN_ADD_DIM); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- ADDING DIMENSION BUTTON
 		sm.addView(drillDownAdddimButton);
 		drillDownAdddimButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				String dimension = (String) drillDownAddDimComboBox.getSelectedItem();
 				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_ADD_DIM, dimension));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 		drillDownAddDimensionPanel.add(drillDownAddDimLabel);
@@ -260,14 +267,16 @@ public class BISystemUI {
 		drillDownDescHierarLabel = new JLabel("Dimension: ");
 		drillDownDescHierarComboBox = new CustomJComboBox(sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< ADD LIST OF ITEMS HERE.. IMPLEMENT MVC FOR DRILLDOWN CLIMB HIER
 		sm.addView(drillDownDescHierarComboBox);
-		drillDownDescHierarButton = new CustomJButton("DRILL DOWN", sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
+		drillDownDescHierarButton = new CustomJButton("Drill Down", sm, BIToolAction.DRILLDOWN_DESC_HIERARCHY); //<<<<<<<<<<<<<<<<<< DRILL DOWN -- DESCEND HIERARCHY DIMENSION BUTTON
 		sm.addView(drillDownDescHierarButton);
 		drillDownDescHierarButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				String dimension = (String) drillDownDescHierarComboBox.getSelectedItem();
 				display.setText(qe.createQuery(BIToolAction.DRILLDOWN_DESC_HIERARCHY, dimension));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 		drillDownDescendHierarchyPanel.add(drillDownDescHierarLabel);
@@ -290,11 +299,12 @@ public class BISystemUI {
 		dicePickValueFromDimensionJTextField3 = new JTextField(15);
 		dicePickValueFromDimensionLabel4 = new JLabel("Product:");
 		dicePickValueFromDimensionJTextField4 = new JTextField(15);
-		diceExecuteButton = new CustomJButton("DICE", sm, BIToolAction.DICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
+		diceExecuteButton = new CustomJButton("Dice", sm, BIToolAction.DICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  DICE BUTTON
 		diceExecuteButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				Map<String, String> map = new HashMap<>();
 				String dimensionValue1 = dicePickValueFromDimensionJTextField1.getText();
 				String dimensionValue2 = dicePickValueFromDimensionJTextField2.getText();
@@ -306,9 +316,8 @@ public class BISystemUI {
 				if (!dimensionValue3.equals("")) map.put("Promotion", dimensionValue3);
 				if (!dimensionValue4.equals("")) map.put("Product", dimensionValue4);
 				
-				System.out.println(map.size());
-				
 				display.setText(qe.dice(map));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 			
 		});
@@ -336,14 +345,16 @@ public class BISystemUI {
 		sm.addView(sliceDimensionComboBox);
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
 		slicePickValueFromDimensionTextField = new JTextField("Field value goes here.");
-		sliceExecuteButton = new CustomJButton("SLICE", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
+		sliceExecuteButton = new CustomJButton("Slice", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
 		sliceExecuteButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				String dimension = (String) sliceDimensionComboBox.getSelectedItem();
 				String dimensionValue = slicePickValueFromDimensionTextField.getText();
 				display.setText(qe.slice(dimension, dimensionValue));
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 			
 		});
@@ -355,20 +366,20 @@ public class BISystemUI {
 		
 		// Create tabbed panes and add panels.
 		rollUpTabbedPane = new JTabbedPane();
-		rollUpTabbedPane.setBorder(BorderFactory.createTitledBorder("ROLL UP"));
+		rollUpTabbedPane.setBorder(BorderFactory.createTitledBorder("Roll Up"));
 		rollUpTabbedPane.addTab("Dimension Reduction", rollUpByDimensionReductionPanel);
 		rollUpTabbedPane.addTab("Climb Up Hierarchy", rollUpByClimbingHierarchyPanel);
 		
 		
 		drillDownTabbedPane = new JTabbedPane();
-		drillDownTabbedPane.setBorder(BorderFactory.createTitledBorder("DRILL DOWN"));
+		drillDownTabbedPane.setBorder(BorderFactory.createTitledBorder("Drill Down"));
 		drillDownTabbedPane.add("Add Dimension", drillDownAddDimensionPanel);
 		drillDownTabbedPane.addTab("Descend Hierarchy", drillDownDescendHierarchyPanel);
 		
 		sliceAndDiceTabbedPane = new JTabbedPane();
-		sliceAndDiceTabbedPane.setBorder(BorderFactory.createTitledBorder("DICE AND SLICE"));
+		sliceAndDiceTabbedPane.setBorder(BorderFactory.createTitledBorder("Dice and Slice"));
 		sliceAndDiceTabbedPane.add("Dice", dicePanel);
-		sliceAndDiceTabbedPane.add("Slice", slicePanel);
+		sliceAndDiceTabbedPane.add("Slice", slicePanel); //<<<<<<<<<<<<< ASK CLASSMATES
 		
 		
 		// Add tabbed panes and the dice panel to the LEFT PANEL
@@ -391,7 +402,7 @@ public class BISystemUI {
 		c.gridy = 2;
 		leftPanel.add(sliceAndDiceTabbedPane, c);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 56;
+		c.ipady = 40;
 		c.weightx = 0.5;
 		c.gridx = 0;
 		c.gridy = 3;
@@ -405,28 +416,31 @@ public class BISystemUI {
 		
 		// Create the sql display
 		sqlDisplay = new JTextArea();
-		sqlDisplay.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		sqlDisplay.setFont(new Font(Font.MONOSPACED, Font.BOLD, 17));
 		sqlDisplay.setEditable(false);
+		sqlDisplay.setText("Welcome to Code Swayze's BI Tool!");
 		sqlScroll = new JScrollPane(sqlDisplay);
-		sqlScroll.setBorder(BorderFactory.createTitledBorder("SQL COMMAND GENERATED"));
+		sqlScroll.setBorder(BorderFactory.createTitledBorder("SQL"));
 		qe.setSqlDisplay(sqlDisplay); //<<<<<< I KNOW ITS UGLY
 		
 		// Create the display (JTextArea)
 		display = new JTextArea();
-		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 10));
 		display.setEditable(false);
-		display.setText("To Start press 'Reset Central Cube'");
+		display.setText("To start press 'Reset Central Cube'");
 		scroll = new JScrollPane(display);
 		scroll.setBorder(BorderFactory.createTitledBorder("RESULT"));
 		
 		// Reset to Central Cube Button
-		resetButton = new JButton("RESET CENTRAL CUBE"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  RESET BUTTON
+		resetButton = new JButton("Reset Central Cube"); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  RESET BUTTON
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sqlDisplay.setText("\n"+qe.initialCentralCubeSQL());
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				sqlDisplay.setText(qe.initialCentralCubeSQL());
 				display.setText(qe.resetCube());
 				sm.initialState();
+				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
 		
@@ -441,7 +455,7 @@ public class BISystemUI {
 		c = new GridBagConstraints();
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 50;
+		c.ipady = 20;
 		//c.gridwidth = 5;
 		c.weightx = 0.5;
 		c.weighty = 0.5;
