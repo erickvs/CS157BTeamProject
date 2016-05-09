@@ -10,4 +10,14 @@ public enum Product {
 	}
     public int getMask(){return mask;}
     public boolean isActive(){return active;}
+    public String getState(){
+    	if(mask == 1){
+    		return "Subcategory";
+    	} else if(mask == 2){
+    		return "Category";
+    	} else if(mask == 3){
+    		return "Department";
+    	}
+    	return "Category";
+    }
 }

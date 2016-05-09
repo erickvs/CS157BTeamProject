@@ -2,6 +2,8 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class StateModel {
 	 private Time time_state;
@@ -137,6 +139,10 @@ public class StateModel {
 				break;
 				
 			case SLICE:
+				if (time_state.isActive()) items.add("Time");
+				if (store_state.isActive()) items.add("Store");
+				if (promotion_state.isActive()) items.add("Promotion");
+				if (product_state.isActive()) items.add("Product");
 				break;
 		}
 		 
@@ -308,4 +314,21 @@ public class StateModel {
 		 
 		 return result;
 	 }
+
+	public Map<String, String> getActiveDimensionsAndStates() {
+		Map<String, String> dimensionsAndStates = new TreeMap<String, String>();
+		if(time_state.isActive()){
+			dimensionsAndStates.put("Time", time_state.getState());
+		}
+		if(product_state.isActive()){
+			dimensionsAndStates.put("Product", product_state.getState());
+		}
+		if(store_state.isActive()){
+			dimensionsAndStates.put("Store", store_state.getState());
+		}
+		if(promotion_state.isActive()){
+			dimensionsAndStates.put("Promotion", promotion_state.getState());
+		}
+		return dimensionsAndStates;
+	}
 }

@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class BISystemUI {
 	
@@ -122,7 +123,8 @@ public class BISystemUI {
 	private static JLabel sliceDimensionLabel;
 	private static CustomJComboBox sliceDimensionComboBox;
 	private static JLabel slicePickValueFromDimensionLabel;
-	private static CustomJComboBox slicePickValueFromDimensionComboBox;
+	//private static CustomJComboBox slicePickValueFromDimensionComboBox;
+	private static JTextField slicePickValueFromDimensionTextField; 
 	private static CustomJButton sliceExecuteButton;
 	/******************************************************/
 	
@@ -318,13 +320,26 @@ public class BISystemUI {
 		sliceDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
 		sm.addView(sliceDimensionComboBox);
 		slicePickValueFromDimensionLabel = new JLabel("Value: ");
-		slicePickValueFromDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
-		sm.addView(slicePickValueFromDimensionComboBox);
+//		slicePickValueFromDimensionComboBox = new CustomJComboBox(sm, BIToolAction.SLICE);
+//		sm.addView(slicePickValueFromDimensionComboBox);
+		slicePickValueFromDimensionTextField = new JTextField("Field value goes here.");
+
 		sliceExecuteButton = new CustomJButton("SLICE", sm, BIToolAction.SLICE); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  SLICE BUTTON
+		sliceExecuteButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dimension = (String) sliceDimensionComboBox.getSelectedItem();
+				String dimensionValue = slicePickValueFromDimensionTextField.getText();
+				display.setText(qe.slice(dimension, dimensionValue));
+			}
+			
+		});
 		slicePanel.add(sliceDimensionLabel);
 		slicePanel.add(sliceDimensionComboBox);
 		slicePanel.add(slicePickValueFromDimensionLabel);
-		slicePanel.add(slicePickValueFromDimensionComboBox);
+//		slicePanel.add(slicePickValueFromDimensionComboBox);
+		slicePanel.add(slicePickValueFromDimensionTextField);
 		slicePanel.add(sliceExecuteButton);
 		
 		// Create tabbed panes and add panels.
@@ -379,7 +394,7 @@ public class BISystemUI {
 		
 		// Create the display (JTextArea)
 		display = new JTextArea();
-		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+		display.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
 		display.setEditable(false);
 		display.setText("To Start press 'Reset Central Cube'");
 		

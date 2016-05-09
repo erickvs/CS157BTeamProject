@@ -10,5 +10,15 @@ public enum Time {
 	}
     public int getMask(){return mask;}
     public boolean isActive(){return active;}
+    public String getState(){
+    	if(mask == 1){
+    		return "Week_number_overall";
+    	} else if (mask == 2){
+    		return "Month";
+    	} else if (mask == 3){
+    		return "Year";
+    	} 
+    	return "Month";
+    }
     
 }

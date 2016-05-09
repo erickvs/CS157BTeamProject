@@ -10,4 +10,14 @@ public enum Store {
 	}
     public int getMask(){return mask;}
     public boolean isActive(){return active;}
+    public String getState(){
+    	if(mask == 1){
+    		return "City";
+    	} else if(mask == 2){
+    		return "Store_State";
+    	} else if(mask == 3){
+    		return "Sales_Region";
+    	}
+    	return "Store_State";
+    }
 }

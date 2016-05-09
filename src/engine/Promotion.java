@@ -10,4 +10,7 @@ public enum Promotion {
 	}
     public int getMask(){return mask;}
     public boolean isActive(){return active;}
+    public String getState(){
+    	return "Promotion_Name";
+    }
 }
