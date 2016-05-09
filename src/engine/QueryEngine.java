@@ -67,9 +67,8 @@ public class QueryEngine {
 		double sales = 0;
 		
 		String result = "";
-		result += " --------------------------------------- \n";
-		result += String.format("|%6s | %8s | %5s |%11s |%n", "State", "Category", "Month", "Sales");
-		result += " --------------------------------------- \n";
+		result += String.format("|%17s | %17s | %17s |%17s |%n", "Product", "Store",  "Time", "Sales");
+		result += "\n";
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -81,9 +80,8 @@ public class QueryEngine {
 				product_category = rs.getString(2);
 				month = rs.getInt(3);
 				sales = rs.getDouble(4);
-				result += String.format("|%6s | %8s | %5d | $%9.2f |%n", store_state, product_category, month, sales);
+				result += String.format("|%17s | %17s | %17d | %17s |%n", product_category, store_state,  month, sales);
 			}
-			result += " --------------------------------------- \n";
 		} catch(Exception se) {
 			se.printStackTrace();
 		}
@@ -96,7 +94,7 @@ public class QueryEngine {
 	 * @return
 	 */
 	public String createQuery(BIToolAction biToolAction, String dimension) {
-		String result = "CALLED " + biToolAction + " with Dimension " + dimension + "\n\n";
+		String result = "\n";
 		// Database stuff would go here, for now just focus on model object transitions
 		switch(biToolAction) {
 			case ROLLUP_CLIMB_HIERARCHY:

@@ -36,22 +36,33 @@ public class StateModel {
 	 public String newLabel(String dimension) {
 		 String result = "";
 		 switch(dimension) {
-		 case "Time":
-			 switch (time_state) {
+		 case "Product":
+			 switch (product_state) {
 			 case INACTIVE:
-				 result = "TIME: INACTIVE";
+				 result = "PRODUCT: INACTIVE";
 				 break;
-			 case WEEK_NUMBER_OVERALL:
-				 result = "TIME:[WEEK] MONTH  YEAR";
+			 case SUBCATEGORY:
+				 result = "PRODUCT:[SUBCATEGORY] CATEGORY  DEPARTMENT";
 				 break;
-			 case MONTH:
-				 result = "TIME: WEEK [MONTH] YEAR";
+			 case CATEGORY:
+				 result = "PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT";
 				 break;
-			 case YEAR:
-				 result = "TIME: WEEK  MONTH [YEAR]";
+			 case DEPARTMENT:
+				 result = "PRODUCT: SUBCATEGORY  CATEGORY [DEPARTMENT]";
 				 break;
 			 }
 			 break;
+		 case "Promotion":
+			 switch (promotion_state) {
+			 case INACTIVE:
+				 result = "PROMOTION: INACTIVE";
+				 break;
+			 case PROMOTION_NAME:
+				 result = "PROMOTION: [PROMOTION_NAME]";
+				 break;
+			 }
+			 break;
+			
 		 case "Store":
 			 switch (store_state) {
 			 case INACTIVE:
@@ -68,29 +79,20 @@ public class StateModel {
 				 break;
 			 }
 			 break;
-		 case "Promotion":
-			 switch (promotion_state) {
+			 
+		 case "Time":
+			 switch (time_state) {
 			 case INACTIVE:
-				 result = "PROMOTION: INACTIVE";
+				 result = "TIME: INACTIVE";
 				 break;
-			 case PROMOTION_NAME:
-				 result = "PROMOTION: [PROMOTION_NAME]";
+			 case WEEK_NUMBER_OVERALL:
+				 result = "TIME:[WEEK] MONTH  YEAR";
 				 break;
-			 }
-			 break;
-		 case "Product":
-			 switch (product_state) {
-			 case INACTIVE:
-				 result = "PRODUCT: INACTIVE";
+			 case MONTH:
+				 result = "TIME: WEEK [MONTH] YEAR";
 				 break;
-			 case SUBCATEGORY:
-				 result = "PRODUCT:[SUBCATEGORY] CATEGORY  DEPARTMENT";
-				 break;
-			 case CATEGORY:
-				 result = "PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT";
-				 break;
-			 case DEPARTMENT:
-				 result = "PRODUCT: SUBCATEGORY  CATEGORY [DEPARTMENT]";
+			 case YEAR:
+				 result = "TIME: WEEK  MONTH [YEAR]";
 				 break;
 			 }
 			 break;

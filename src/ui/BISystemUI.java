@@ -178,10 +178,11 @@ public class BISystemUI {
 		productLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, CURRENT_STATE_FONT_SIZE));
 		sm.addView(productLabel);
 		
-		statePanel.add(timeLabel);
-		statePanel.add(storeLabel);
-		statePanel.add(promotionLabel);
 		statePanel.add(productLabel);
+		statePanel.add(promotionLabel);
+		statePanel.add(storeLabel);
+		statePanel.add(timeLabel);
+		
 		/******************************************************************/
 		
 		// Initialize leftPanel

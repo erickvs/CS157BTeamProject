@@ -18,8 +18,6 @@ public class CustomJComboBox extends JComboBox<String> implements View {
 	public void updateView() {
 		DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>( sm.getItemsFor(biToolAction) );
 		this.setModel(m);
-		//this.revalidate();
-		//this.repaint();
 	}
 
 	
