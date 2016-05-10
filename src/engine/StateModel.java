@@ -39,16 +39,16 @@ public class StateModel {
 		 case "Product":
 			 switch (product_state) {
 			 case INACTIVE:
-				 result = "PRODUCT: INACTIVE";
+				 result = "  PRODUCT: INACTIVE";
 				 break;
 			 case SUBCATEGORY:
-				 result = "PRODUCT:[SUBCATEGORY] CATEGORY  DEPARTMENT";
+				 result = "  PRODUCT:[SUBCATEGORY] CATEGORY  DEPARTMENT";
 				 break;
 			 case CATEGORY:
-				 result = "PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT";
+				 result = "  PRODUCT: SUBCATEGORY [CATEGORY] DEPARTMENT";
 				 break;
 			 case DEPARTMENT:
-				 result = "PRODUCT: SUBCATEGORY  CATEGORY [DEPARTMENT]";
+				 result = "  PRODUCT: SUBCATEGORY  CATEGORY [DEPARTMENT]";
 				 break;
 			 }
 			 break;
@@ -58,7 +58,7 @@ public class StateModel {
 				 result = "PROMOTION: INACTIVE";
 				 break;
 			 case PROMOTION_NAME:
-				 result = "PROMOTION: [PROMOTION_NAME]";
+				 result = "PROMOTION:[PROMOTION_NAME]";
 				 break;
 			 }
 			 break;
@@ -66,16 +66,16 @@ public class StateModel {
 		 case "Store":
 			 switch (store_state) {
 			 case INACTIVE:
-				 result = "STORE: INACTIVE";
+				 result = "    STORE: INACTIVE";
 				 break;
 			 case CITY:
-				 result = "STORE:[CITY] STATE  REGION";
+				 result = "    STORE:[CITY] STATE  REGION";
 				 break;
 			 case STORE_STATE:
-				 result = "STORE: CITY [STATE] REGION";
+				 result = "    STORE: CITY [STATE] REGION";
 				 break;
 			 case STORE_REGION:
-				 result = "STORE: CITY  STATE [REGION]";
+				 result = "    STORE: CITY  STATE [REGION]";
 				 break;
 			 }
 			 break;
@@ -83,16 +83,16 @@ public class StateModel {
 		 case "Time":
 			 switch (time_state) {
 			 case INACTIVE:
-				 result = "TIME: INACTIVE";
+				 result = "     TIME: INACTIVE";
 				 break;
 			 case WEEK_NUMBER_OVERALL:
-				 result = "TIME:[WEEK] MONTH  YEAR";
+				 result = "     TIME:[WEEK] MONTH  YEAR";
 				 break;
 			 case MONTH:
-				 result = "TIME: WEEK [MONTH] YEAR";
+				 result = "     TIME: WEEK [MONTH] YEAR";
 				 break;
 			 case YEAR:
-				 result = "TIME: WEEK  MONTH [YEAR]";
+				 result = "     TIME: WEEK  MONTH [YEAR]";
 				 break;
 			 }
 			 break;
